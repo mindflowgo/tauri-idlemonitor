@@ -1,0 +1,13 @@
+"$schema" = "schemas/schema.json"
+
+[default]
+description = """
+Default permissions for the idlemonitor plugin.
+Allows starting/stopping monitoring and querying idle time.
+"""
+
+permissions = [
+  "allow-start",
+  "allow-stop",
+  "allow-get-idle-time",
+]

@@ -1,0 +1,41 @@
+[package]
+name = "tauri-plugin-idlemonitor"
+version = "0.1.0"
+description = "Monitor screen lock/unlock, system idle time, and suspend/resume across macOS, Windows, and Linux."
+edition = "2021"
+links = "tauri-plugin-idlemonitor"
+
+[package.metadata.platforms.support]
+windows = { level = "full", notes = "" }
+linux = { level = "full", notes = "X11 and GNOME Wayland supported. KDE/Sway/Hyprland Wayland idle detection planned for v2." }
+macos = { level = "full", notes = "" }
+android = { level = "none", notes = "" }
+ios = { level = "none", notes = "" }
+
+[build-dependencies]
+tauri-plugin = { version = "2", features = ["build"] }
+
+[dependencies]
+serde = { version = "1", features = ["derive"] }
+serde_json = "1"
+tauri = "2"
+thiserror = "2"
+tokio = { version = "1", features = ["rt", "time", "sync"] }
+user-idle2 = "0.6"
+
+[target.'cfg(target_os = "macos")'.dependencies]
+block2 = "0.6"
+objc2 = "0.6"
+objc2-foundation = { version = "0.3", features = ["NSNotification", "NSString", "NSDistributedNotificationCenter"] }
+
+[target.'cfg(target_os = "linux")'.dependencies]
+zbus = "5"
+futures-util = "0.3"
+
+[target.'cfg(target_os = "windows")'.dependencies]
+windows-sys = { version = "0.59", features = [
+    "Win32_Foundation",
+    "Win32_System_RemoteDesktop",
+    "Win32_UI_WindowsAndMessaging",
+    "Win32_System_Threading",
+] }
