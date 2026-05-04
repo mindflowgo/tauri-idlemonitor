@@ -23,14 +23,14 @@ Add to your `src-tauri/Cargo.toml`:
 
 ```toml
 [dependencies]
-tauri-plugin-idlemonitor = { path = "../tauri-plugin-idlemonitor" }
+tauri-plugin-idlemonitor = "0.10"
 ```
 
 Or from a git repository:
 
 ```toml
 [dependencies]
-tauri-plugin-idlemonitor = { git = "https://github.com/mindflowgo/tauri-plugin-idlemonitor" }
+tauri-plugin-idlemonitor = { git = "https://github.com/mindflowgo/tauri-idlemonitor/" }
 ```
 
 ### JavaScript/TypeScript
@@ -362,8 +362,8 @@ Because the linux GUI ecosystem is so more more diverse, different techiques wer
 
 ## License
 
-MIT or Apache-2.0
+MIT
 
 ## Contributions
 
-Original concept researched and guided by Filipe Laborde (fil@rezox.com), modules, prefered method calls; however the heavy lifting was done by Z.Ai v5.1.
+Original concept researched and guided by Filipe Laborde (fil {at} rezox.com), modules, prefered method calls; however the heavy lifting was done by Z.Ai v5.1.
