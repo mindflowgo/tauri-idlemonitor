@@ -12,31 +12,8 @@ Monitor screen lock/unlock, system idle time, and suspend/resume events in Tauri
 | Android  | x           | x         | x              | Not supported |
 | iOS      | x           | x         | x              | Not supported |
 
-### Linux Details
-
-| Display Server | Idle Detection | Lock Detection |
-| -------------- | -------------- | -------------- |
-| X11            | ✓ XScreenSaver extension | ✓ DBus ScreenSaver + login1 |
-| Wayland (GNOME)| ✓ Mutter IdleMonitor DBus | ✓ DBus ScreenSaver + login1 |
-| Wayland (KDE)  | Partial | ✓ DBus ScreenSaver + login1 |
-| Wayland (Sway/Hyprland) | Not yet | ✓ DBus login1 |
-
-## Underlying System APIs
-
-### macOS
-- **Idle time**: IOKit `kIOHIDLastActivityTimeKey` via the `user-idle2` crate
-- **Lock/Unlock**: `NSDistributedNotificationCenter` — listens for `NSWorkspaceSessionDidResignActiveNotification` (lock) and `NSWorkspaceSessionDidBecomeActiveNotification` (unlock)
-- **Suspend/Resume**: `NSWorkspaceScreensDidSleepNotification` and `NSWorkspaceScreensDidWakeNotification`
-
-### Windows
-- **Idle time**: `GetLastInputInfo()` Win32 API — returns tick count of last input event
-- **Lock/Unlock**: `WTSRegisterSessionNotificationEx` — receives `WM_WTSSESSION_CHANGE` messages with `WTS_SESSION_LOCK` / `WTS_SESSION_UNLOCK` via a hidden window
-
-### Linux
-- **Idle time (X11)**: XScreenSaver extension `XScreenSaverQueryInfo` via the `x11` crate
-- **Idle time (GNOME Wayland)**: `org.gnome.Mutter.IdleMonitor.GetIdletime` via DBus
-- **Lock/Unlock**: `org.freedesktop.ScreenSaver.ActiveChanged` DBus signal
-- **Suspend/Resume**: `org.freedesktop.login1.Manager.PrepareForSleep` DBus signal
+## Crate v0.10
+[tauri-plugin-idlemonitor](https://crates.io/crates/tauri-plugin-idlemonitor)
 
 ## Install
 
@@ -346,6 +323,33 @@ await listen('system:lock', (event) => {
 - **Lock/unlock listeners** are event-driven — zero CPU usage when idle
 - **Idle time polling** runs every 3 seconds via `tokio::time::interval`, using `spawn_blocking` to avoid blocking the async runtime
 - **State-change-only emission** — events fire only on transitions (not-idle→idle, idle→not-idle), not on every poll
+
+## Underlying System APIs
+
+### macOS
+- **Idle time**: IOKit `kIOHIDLastActivityTimeKey` via the `user-idle2` crate
+- **Lock/Unlock**: `NSDistributedNotificationCenter` — listens for `NSWorkspaceSessionDidResignActiveNotification` (lock) and `NSWorkspaceSessionDidBecomeActiveNotification` (unlock)
+- **Suspend/Resume**: `NSWorkspaceScreensDidSleepNotification` and `NSWorkspaceScreensDidWakeNotification`
+
+### Windows
+- **Idle time**: `GetLastInputInfo()` Win32 API — returns tick count of last input event
+- **Lock/Unlock**: `WTSRegisterSessionNotificationEx` — receives `WM_WTSSESSION_CHANGE` messages with `WTS_SESSION_LOCK` / `WTS_SESSION_UNLOCK` via a hidden window
+
+### Linux
+
+Because the linux GUI ecosystem is so more more diverse, different techiques were used:
+
+| Display Server | Idle Detection | Lock Detection |
+| -------------- | -------------- | -------------- |
+| X11            | ✓ XScreenSaver extension | ✓ DBus ScreenSaver + login1 |
+| Wayland (GNOME)| ✓ Mutter IdleMonitor DBus | ✓ DBus ScreenSaver + login1 |
+| Wayland (KDE)  | Partial | ✓ DBus ScreenSaver + login1 |
+| Wayland (Sway/Hyprland) | Not yet | ✓ DBus login1 |
+
+- **Idle time (X11)**: XScreenSaver extension `XScreenSaverQueryInfo` via the `x11` crate
+- **Idle time (GNOME Wayland)**: `org.gnome.Mutter.IdleMonitor.GetIdletime` via DBus
+- **Lock/Unlock**: `org.freedesktop.ScreenSaver.ActiveChanged` DBus signal
+- **Suspend/Resume**: `org.freedesktop.login1.Manager.PrepareForSleep` DBus signal
 
 ## Future Work
 
