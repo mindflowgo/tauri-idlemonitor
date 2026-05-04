@@ -29,19 +29,19 @@ export async function getIdleTime(): Promise<{ seconds: number }> {
 export async function onLock(
   handler: (payload: LockPayload) => void,
 ): Promise<UnlistenFn> {
-  return listen<LockPayload>('power:lock', (e) => handler(e.payload))
+  return listen<LockPayload>('system:lock', (e) => handler(e.payload))
 }
 
 export async function onIdle(
   handler: (payload: IdlePayload) => void,
 ): Promise<UnlistenFn> {
-  return listen<IdlePayload>('power:idle', (e) => handler(e.payload))
+  return listen<IdlePayload>('system:idle', (e) => handler(e.payload))
 }
 
 export async function onSuspend(handler: () => void): Promise<UnlistenFn> {
-  return listen('power:suspend', () => handler())
+  return listen('system:suspend', () => handler())
 }
 
 export async function onResume(handler: () => void): Promise<UnlistenFn> {
-  return listen('power:resume', () => handler())
+  return listen('system:resume', () => handler())
 }

@@ -38,7 +38,7 @@ unsafe fn listen_nsworkspace<R: Runtime>(
             callback: {
                 let app = app.clone();
                 Box::new(move || {
-                    let _ = app.emit("power:lock", crate::error::LockPayload { locked: true });
+                    let _ = app.emit("system:lock", crate::error::LockPayload { locked: true });
                 })
             },
         },
@@ -47,7 +47,7 @@ unsafe fn listen_nsworkspace<R: Runtime>(
             callback: {
                 let app = app.clone();
                 Box::new(move || {
-                    let _ = app.emit("power:lock", crate::error::LockPayload { locked: false });
+                    let _ = app.emit("system:lock", crate::error::LockPayload { locked: false });
                 })
             },
         },
@@ -56,7 +56,7 @@ unsafe fn listen_nsworkspace<R: Runtime>(
             callback: {
                 let app = app.clone();
                 Box::new(move || {
-                    let _ = app.emit("power:suspend", crate::error::SuspendPayload {});
+                    let _ = app.emit("system:suspend", crate::error::SuspendPayload {});
                 })
             },
         },
@@ -65,7 +65,7 @@ unsafe fn listen_nsworkspace<R: Runtime>(
             callback: {
                 let app = app.clone();
                 Box::new(move || {
-                    let _ = app.emit("power:resume", crate::error::ResumePayload {});
+                    let _ = app.emit("system:resume", crate::error::ResumePayload {});
                 })
             },
         },

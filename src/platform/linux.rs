@@ -69,17 +69,17 @@ async fn listen_dbus<R: Runtime>(
                         Ok(b)
                     })
                 {
-                    let _ = app.emit("power:lock", crate::error::LockPayload { locked: active });
+                    let _ = app.emit("system:lock", crate::error::LockPayload { locked: active });
                 } else if let Ok(active) = msg.body::<bool>() {
-                    let _ = app.emit("power:lock", crate::error::LockPayload { locked: active });
+                    let _ = app.emit("system:lock", crate::error::LockPayload { locked: active });
                 }
             }
             (Some("org.freedesktop.login1.Manager"), Some("PrepareForSleep")) => {
                 if let Ok(sleeping) = msg.body::<bool>() {
                     if sleeping {
-                        let _ = app.emit("power:suspend", crate::error::SuspendPayload {});
+                        let _ = app.emit("system:suspend", crate::error::SuspendPayload {});
                     } else {
-                        let _ = app.emit("power:resume", crate::error::ResumePayload {});
+                        let _ = app.emit("system:resume", crate::error::ResumePayload {});
                     }
                 }
             }

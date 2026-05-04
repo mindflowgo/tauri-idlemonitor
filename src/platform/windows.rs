@@ -36,7 +36,7 @@ unsafe fn listen_wts<R: Runtime>(
     app: &AppHandle<R>,
     running: std::sync::Arc<std::sync::atomic::AtomicBool>,
 ) {
-    let class_name: Vec<u16> = "TauriPowerMonitor\0".encode_utf16().collect();
+    let class_name: Vec<u16> = "TauriIdleMonitor\0".encode_utf16().collect();
 
     let wnd_class = WNDCLASSW {
         lpfnWndProc: Some(def_window_proc),
@@ -78,10 +78,10 @@ unsafe fn listen_wts<R: Runtime>(
         if msg.message == WM_WTSSESSION_CHANGE {
             match msg.wParam as u32 {
                 WTS_SESSION_LOCK => {
-                    let _ = app.emit("power:lock", crate::error::LockPayload { locked: true });
+                    let _ = app.emit("system:lock", crate::error::LockPayload { locked: true });
                 }
                 WTS_SESSION_UNLOCK => {
-                    let _ = app.emit("power:lock", crate::error::LockPayload { locked: false });
+                    let _ = app.emit("system:lock", crate::error::LockPayload { locked: false });
                 }
                 _ => {}
             }

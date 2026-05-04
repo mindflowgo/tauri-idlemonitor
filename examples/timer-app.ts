@@ -2,9 +2,9 @@
 //
 // Usage:
 //   1. Register the plugin in src-tauri/src/lib.rs:
-//      tauri::Builder::default().plugin(tauri_plugin_powermonitor::init())
+//      tauri::Builder::default().plugin(tauri_plugin_idlemonitor::init())
 //
-//   2. Import and call setupPowerMonitoring() on app startup.
+//   2. Import and call setupIdleMonitoring() on app startup.
 
 import {
   start,
@@ -52,11 +52,11 @@ async function syncToServer() {
   console.log('🔄 Syncing data to server after wake...')
 }
 
-export async function setupPowerMonitoring() {
+export async function setupIdleMonitoring() {
   // Start monitoring with 5-minute (300s) idle threshold
   await start({ idleThresholdSecs: 300 })
   startTimer()
-  console.log('✅ Power monitoring started — timer running')
+  console.log('✅ Idle monitoring started — timer running')
 
   // ── Screen Lock ──────────────────────────────────────────
   await onLock((payload) => {
@@ -97,10 +97,10 @@ export async function setupPowerMonitoring() {
   })
 }
 
-export async function teardownPowerMonitoring() {
+export async function teardownIdleMonitoring() {
   pauseTimer()
   await stop()
-  console.log('🛑 Power monitoring stopped')
+  console.log('🛑 Idle monitoring stopped')
 }
 
 // ── One-shot idle time query (doesn't require start()) ──────

@@ -96,7 +96,7 @@ For non-GNOME Wayland compositors (KDE, Sway, Hyprland):
 | macOS lock | `core-foundation` + `objc` | NSWorkspace notifications |
 | Windows lock | `windows` crate | `WTSRegisterSessionNotificationEx` → `WM_WTSSESSION_CHANGE` |
 | Linux lock | `zbus` | `org.freedesktop.login1` `PrepareForSleep` + `org.freedesktop.ScreenSaver.ActiveChanged` |
-| Tauri events | `tauri` built-in | `app_handle.emit_all("power:lock", payload)` |
+| Tauri events | `tauri` built-in | `app_handle.emit_all("system:lock", payload)` |
 
 ## Plugin Structure
 
@@ -127,12 +127,12 @@ tauri-plugin-idlemonitor/
 
 | Event | Payload | Trigger |
 |-------|---------|---------|
-| `power:lock` | `{ locked: true }` | Screen locked |
-| `power:lock` | `{ locked: false }` | Screen unlocked |
-| `power:idle` | `{ idle: true, seconds: 300 }` | Idle threshold crossed |
-| `power:idle` | `{ idle: false }` | User activity after idle |
-| `power:suspend` | `{ }` | System sleep (bonus) |
-| `power:resume` | `{ }` | System wake (bonus) |
+| `system:lock` | `{ locked: true }` | Screen locked |
+| `system:lock` | `{ locked: false }` | Screen unlocked |
+| `system:idle` | `{ idle: true, seconds: 300 }` | Idle threshold crossed |
+| `system:idle` | `{ idle: false }` | User activity after idle |
+| `system:suspend` | `{ }` | System sleep (bonus) |
+| `system:resume` | `{ }` | System wake (bonus) |
 
 ## Commands (JS → Rust)
 
@@ -216,7 +216,7 @@ fn get_idle_time_wayland() -> u64 {
 - Tokio interval every 3 seconds
 - Call platform-specific `get_idle_time()`
 - Compare against configurable threshold (default 300s)
-- Only emit `power:idle` on **state transitions** (not-idle→idle, idle→not-idle)
+- Only emit `system:idle` on **state transitions** (not-idle→idle, idle→not-idle)
 - Lock/unlock listeners are **event-driven** (zero polling)
 
 ## guest-js API
@@ -229,14 +229,14 @@ import { listen } from '@tauri-apps/api/event';
 await start({ idleThresholdSecs: 300 });
 
 // Listen for events
-await listen('power:lock', (e) => {
+await listen('system:lock', (e) => {
   console.log(e.payload.locked ? 'Screen locked' : 'Screen unlocked');
 });
-await listen('power:idle', (e) => {
+await listen('system:idle', (e) => {
   console.log(e.payload.idle ? `Idle ${e.payload.seconds}s` : 'Active');
 });
-await listen('power:suspend', () => console.log('System sleeping'));
-await listen('power:resume', () => console.log('System woke'));
+await listen('system:suspend', () => console.log('System sleeping'));
+await listen('system:resume', () => console.log('System woke'));
 
 // One-shot query
 const { seconds } = await getIdleTime();

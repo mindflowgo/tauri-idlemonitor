@@ -59,7 +59,7 @@ impl IdleMonitor {
                     if !was_idle && now_idle {
                         is_idle.store(true, Ordering::Relaxed);
                         let _ = app.emit(
-                            "power:idle",
+                            "system:idle",
                             IdlePayload {
                                 idle: true,
                                 seconds: Some(secs),
@@ -68,7 +68,7 @@ impl IdleMonitor {
                     } else if was_idle && !now_idle {
                         is_idle.store(false, Ordering::Relaxed);
                         let _ = app.emit(
-                            "power:idle",
+                            "system:idle",
                             IdlePayload {
                                 idle: false,
                                 seconds: None,

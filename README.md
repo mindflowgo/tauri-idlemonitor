@@ -53,7 +53,7 @@ Or from a git repository:
 
 ```toml
 [dependencies]
-tauri-plugin-idlemonitor = { git = "https://github.com/your-org/tauri-plugin-idlemonitor" }
+tauri-plugin-idlemonitor = { git = "https://github.com/mindflowgo/tauri-plugin-idlemonitor" }
 ```
 
 ### JavaScript/TypeScript
@@ -87,7 +87,7 @@ Add to your `src-tauri/capabilities/default.json`:
 ```rust
 fn main() {
     tauri::Builder::default()
-        .plugin(tauri_plugin_powermonitor::init())
+        .plugin(tauri_plugin_idlemonitor::init())
         .run(tauri::generate_context!())
         .expect("error while running tauri application");
 }
@@ -98,7 +98,7 @@ Or with a custom idle threshold:
 ```rust
 tauri::Builder::default()
     .plugin(
-        tauri_plugin_powermonitor::Builder::new()
+        tauri_plugin_idlemonitor::Builder::new()
             .idle_threshold_secs(600) // 10 minutes
             .build()
     )
@@ -198,7 +198,7 @@ import {
 
 let isTracking = true
 
-async function setupPowerMonitoring() {
+async function setupIdleMonitoring() {
   // Start with 5-minute idle threshold
   await start({ idleThresholdSecs: 300 })
 
@@ -234,14 +234,14 @@ async function setupPowerMonitoring() {
 }
 
 // Call on app startup
-setupPowerMonitoring()
+setupIdleMonitoring()
 ```
 
 ## API Reference
 
 ### `start(options?)`
 
-Start all power monitoring listeners and idle polling.
+Start all idle monitoring listeners and idle polling.
 
 ```typescript
 function start(options?: { idleThresholdSecs?: number }): Promise<void>
@@ -306,17 +306,17 @@ function onResume(handler: () => void): Promise<() => void>
 
 | Event | Payload | Description |
 |-------|---------|-------------|
-| `power:lock` | `{ locked: boolean }` | Screen locked or unlocked |
-| `power:idle` | `{ idle: boolean, seconds?: number }` | User idle threshold crossed or broken |
-| `power:suspend` | `{ }` | System going to sleep |
-| `power:resume` | `{ }` | System waking up |
+| `system:lock` | `{ locked: boolean }` | Screen locked or unlocked |
+| `system:idle` | `{ idle: boolean, seconds?: number }` | User idle threshold crossed or broken |
+| `system:suspend` | `{ }` | System going to sleep |
+| `system:resume` | `{ }` | System waking up |
 
 You can also listen to raw events using `@tauri-apps/api/event`:
 
 ```typescript
 import { listen } from '@tauri-apps/api/event'
 
-await listen('power:lock', (event) => {
+await listen('system:lock', (event) => {
   console.log(event.payload) // { locked: true/false }
 })
 ```
