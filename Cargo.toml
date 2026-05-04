@@ -5,6 +5,8 @@ description = "Tauri v2 plugin to allow screen lock/unlock, system idle time acr
 edition = "2021"
 links = "tauri-plugin-idlemonitor"
 license = "MIT"
+homepage = "https://github.com/mindflowgo/tauri-idlemonitor/"
+repository = "https://github.com/mindflowgo/tauri-idlemonitor/"
 
 [package.metadata.platforms.support]
 windows = { level = "full", notes = "" }
