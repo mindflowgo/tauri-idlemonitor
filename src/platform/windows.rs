@@ -1,6 +1,20 @@
 use tauri::{AppHandle, Emitter, Runtime};
+use windows_sys::Win32::{
+    Foundation::{HWND, LPARAM, LRESULT, WPARAM},
+    System::RemoteDesktop::{
+        WTSRegisterSessionNotification, NOTIFY_FOR_THIS_SESSION,
+    },
+    UI::WindowsAndMessaging::{
+        CreateWindowExW, DefWindowProcW, DispatchMessageW, GetMessageW,
+        RegisterClassW, WM_WTSSESSION_CHANGE, WNDCLASSW, CW_USEDEFAULT,
+    },
+};
 
 use crate::platform::types::LockListener;
+
+// These constants are not exported by windows-sys 0.59
+const WTS_SESSION_LOCK: u32 = 0x7;
+const WTS_SESSION_UNLOCK: u32 = 0x8;
 
 pub fn start_lock_listener<R: Runtime>(app: &AppHandle<R>) -> std::result::Result<LockListener, String> {
     let running = std::sync::Arc::new(std::sync::atomic::AtomicBool::new(true));
@@ -22,19 +36,6 @@ unsafe fn listen_wts<R: Runtime>(
     app: &AppHandle<R>,
     running: std::sync::Arc<std::sync::atomic::AtomicBool>,
 ) {
-    use windows_sys::Win32::{
-        Foundation::{BOOL, HWND, LPARAM, LRESULT, WPARAM},
-        System::RemoteDesktop::{
-            WTSRegisterSessionNotification, WTS_SESSION_LOCK, WTS_SESSION_UNLOCK,
-            WTS_CURRENT_SERVER_HANDLE, NOTIFY_FOR_THIS_SESSION,
-        },
-        UI::WindowsAndMessaging::{
-            CreateWindowExW, DefWindowProcW, DispatchMessageW, GetMessageW,
-            RegisterClassW, WINDOW_STYLE, WM_WTSSESSION_CHANGE, WNDCLASSW,
-            CW_USEDEFAULT, WS_OVERLAPPEDWINDOW,
-        },
-    };
-
     let class_name: Vec<u16> = "TauriPowerMonitor\0".encode_utf16().collect();
 
     let wnd_class = WNDCLASSW {
@@ -50,7 +51,7 @@ unsafe fn listen_wts<R: Runtime>(
             0,
             class_name.as_ptr(),
             class_name.as_ptr(),
-            WINDOW_STYLE(0),
+            0,
             CW_USEDEFAULT, CW_USEDEFAULT, CW_USEDEFAULT, CW_USEDEFAULT,
             std::ptr::null_mut(),
             std::ptr::null_mut(),
