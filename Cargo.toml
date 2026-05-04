@@ -1,9 +1,10 @@
 [package]
 name = "tauri-plugin-idlemonitor"
 version = "0.1.0"
-description = "Monitor screen lock/unlock, system idle time, and suspend/resume across macOS, Windows, and Linux."
+description = "Tauri v2 plugin to allow screen lock/unlock, system idle time across macOS, Windows, and Linux."
 edition = "2021"
 links = "tauri-plugin-idlemonitor"
+license = "MIT"
 
 [package.metadata.platforms.support]
 windows = { level = "full", notes = "" }
