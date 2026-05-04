@@ -12,7 +12,7 @@ Monitor screen lock/unlock, system idle time, and suspend/resume events in Tauri
 | Android  | x           | x         | x              | Not supported |
 | iOS      | x           | x         | x              | Not supported |
 
-## Crate v0.10
+## Crate v0.2.1
 [tauri-plugin-idlemonitor](https://crates.io/crates/tauri-plugin-idlemonitor)
 
 ## Install
@@ -23,7 +23,7 @@ Add to your `src-tauri/Cargo.toml`:
 
 ```toml
 [dependencies]
-tauri-plugin-idlemonitor = "0.10"
+tauri-plugin-idlemonitor = "0.2.1"
 ```
 
 Or from a git repository:
