@@ -2,6 +2,10 @@
 
 Monitor screen lock/unlock, system idle time, and suspend/resume events in Tauri v2 applications. Inspired by Electron's `powerMonitor` API.
 
+## Preview
+
+![idlemonitor](https://raw.githubusercontent.com/mindflowgo/tauri-idlemonitor/main/preview.jpg)
+
 ## Platform Support
 
 | Platform | Lock/Unlock | Idle Time | Suspend/Resume | Notes |
@@ -12,7 +16,7 @@ Monitor screen lock/unlock, system idle time, and suspend/resume events in Tauri
 | Android  | x           | x         | x              | Not supported |
 | iOS      | x           | x         | x              | Not supported |
 
-## Crate v0.2.1
+## Crate v0.2.2
 [tauri-plugin-idlemonitor](https://crates.io/crates/tauri-plugin-idlemonitor)
 
 ## Install

@@ -4,6 +4,7 @@ use crate::error::Result;
 use crate::PowerMonitorState;
 
 #[derive(serde::Deserialize)]
+#[serde(rename_all = "camelCase")]
 pub struct StartOptions {
     pub idle_threshold_secs: Option<u64>,
 }

@@ -1,0 +1,24 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="stylesheet" href="/src/styles.css" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>IdleMonitor Demo</title>
+    <script type="module" src="/src/main.ts" defer></script>
+  </head>
+
+  <body>
+    <main class="container">
+      <div class="row" style="margin-top: 2rem; display: flex; flex-direction: column; align-items: center;">
+        <h2>IdleMonitor Demo</h2>
+        <div id="status" style="font-size: 1.5rem; margin-bottom: 1rem; color: #4CAF50;">Status: Active</div>
+        <div id="timer" style="font-size: 4rem; font-family: monospace;">00:00</div>
+        <button id="check-idle" style="margin-top: 1rem;">Check Current Idle Time</button>
+        <div id="events" style="margin-top: 2rem; width: 100%; max-width: 500px; height: 200px; overflow-y: auto; background: #1a1a1a; padding: 15px; border-radius: 8px; font-family: monospace; font-size: 0.9rem; text-align: left; border: 1px solid #333;">
+          <div style="color: #888;">[System] Ready. Screen lock, system idle, and suspend events will be logged here.</div>
+        </div>
+      </div>
+    </main>
+  </body>
+</html>

@@ -1,6 +1,6 @@
 [package]
 name = "tauri-plugin-idlemonitor"
-version = "0.2.1"
+version = "0.2.2"
 description = "Tauri v2 plugin to allow screen lock/unlock, system idle time across macOS, Windows, and Linux."
 edition = "2021"
 links = "tauri-plugin-idlemonitor"
@@ -30,6 +30,7 @@ user-idle2 = "0.6"
 block2 = "0.6"
 objc2 = "0.6"
 objc2-foundation = { version = "0.3", features = ["NSNotification", "NSString", "NSDistributedNotificationCenter"] }
+objc2-app-kit = { version = "0.3", features = ["NSWorkspace"] }
 
 [target.'cfg(target_os = "linux")'.dependencies]
 zbus = "5"

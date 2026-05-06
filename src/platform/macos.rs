@@ -3,25 +3,22 @@ use tauri::{AppHandle, Emitter, Runtime};
 use crate::platform::types::LockListener;
 
 pub fn start_lock_listener<R: Runtime>(app: &AppHandle<R>) -> std::result::Result<LockListener, String> {
-    let running = std::sync::Arc::new(std::sync::atomic::AtomicBool::new(true));
-    let running_clone = running.clone();
-
     let app_clone = app.clone();
-    std::thread::spawn(move || {
-        unsafe { listen_nsworkspace(&app_clone, running_clone) };
+    
+    // Register on main thread so the main runloop can process the NSDistributedNotificationCenter notifications
+    let _ = app.run_on_main_thread(move || {
+        unsafe { listen_nsworkspace(&app_clone) };
     });
 
     Ok(LockListener {
-        stop: Box::new(move || {
-            running.store(false, std::sync::atomic::Ordering::Relaxed);
+        stop: Box::new(|| {
+            // Note: properly removing observers would require storing the id returned from addObserverForName
+            // but for global plugin we just leave them active or they die with the app.
         }),
     })
 }
 
-unsafe fn listen_nsworkspace<R: Runtime>(
-    app: &AppHandle<R>,
-    running: std::sync::Arc<std::sync::atomic::AtomicBool>,
-) {
+unsafe fn listen_nsworkspace<R: Runtime>(app: &AppHandle<R>) {
     use objc2_foundation::{NSDistributedNotificationCenter, NSNotification, NSString};
     use std::ptr::NonNull;
 
@@ -34,7 +31,7 @@ unsafe fn listen_nsworkspace<R: Runtime>(
 
     let handlers: std::sync::Arc<Vec<Handler>> = std::sync::Arc::new(vec![
         Handler {
-            name: "NSWorkspaceSessionDidResignActiveNotification".into(),
+            name: "com.apple.screenIsLocked".into(),
             callback: {
                 let app = app.clone();
                 Box::new(move || {
@@ -43,7 +40,7 @@ unsafe fn listen_nsworkspace<R: Runtime>(
             },
         },
         Handler {
-            name: "NSWorkspaceSessionDidBecomeActiveNotification".into(),
+            name: "com.apple.screenIsUnlocked".into(),
             callback: {
                 let app = app.clone();
                 Box::new(move || {
@@ -80,8 +77,16 @@ unsafe fn listen_nsworkspace<R: Runtime>(
         }).copy();
 
         let ns_name = NSString::from_str(&handlers[i].name);
+        
+        let center_to_use = if handlers[i].name.contains("NSWorkspace") {
+            use objc2_app_kit::NSWorkspace;
+            NSWorkspace::sharedWorkspace().notificationCenter()
+        } else {
+            objc2::rc::Retained::into_super(center.clone())
+        };
+
         unsafe {
-            center.addObserverForName_object_queue_usingBlock(
+            center_to_use.addObserverForName_object_queue_usingBlock(
                 Some(&ns_name),
                 None,
                 None,
@@ -89,9 +94,5 @@ unsafe fn listen_nsworkspace<R: Runtime>(
             );
         }
         std::mem::forget(block);
-    }
-
-    while running.load(std::sync::atomic::Ordering::Relaxed) {
-        std::thread::sleep(std::time::Duration::from_millis(500));
     }
 }
