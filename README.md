@@ -27,7 +27,7 @@ Add to your `src-tauri/Cargo.toml`:
 
 ```toml
 [dependencies]
-tauri-plugin-idlemonitor = "0.2.1"
+tauri-plugin-idlemonitor = "0.2.2"
 ```
 
 Or from a git repository:
@@ -39,13 +39,7 @@ tauri-plugin-idlemonitor = { git = "https://github.com/mindflowgo/tauri-idlemoni
 
 ### JavaScript/TypeScript
 
-Copy the `guest-js/` directory into your project, or install via npm:
-
-```sh
-npm add tauri-plugin-idlemonitor-api
-# or
-pnpm add tauri-plugin-idlemonitor-api
-```
+Copy the `tauri-plugin-idlemonitor-api/` directory into your javascript/typescript project.
 
 ### Permissions
 

@@ -5,11 +5,14 @@ This template showcases how the idlemonitor plugin can be used to monitor system
 ## How to run
 
 ```bash
+npm install
 npm run tauri dev
 ```
 
-## How to build
+## To build app (to install on your machine)
 
 ```bash
+npm install
 npm run tauri build
 ```
+

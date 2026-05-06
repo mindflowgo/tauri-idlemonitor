@@ -7,7 +7,6 @@ import {
   getIdleTime,
 } from 'tauri-plugin-idlemonitor-api'
 
-let timerSeconds = 0
 let timerInterval: ReturnType<typeof setInterval> | null = null
 
 function logEvent(msg: string) {
@@ -32,8 +31,15 @@ function updateStatus(status: string, color: string) {
 function startTimer() {
   if (timerInterval) return
   updateStatus("Active", "#4CAF50")
+  
+  const timerEl = document.querySelector("#timer") as HTMLElement
+  if (timerEl) {
+    timerEl.style.opacity = "1.0"
+  }
+
+  // Update immediately, then start interval
+  updateTimerDisplay()
   timerInterval = setInterval(() => {
-    timerSeconds++
     updateTimerDisplay()
   }, 1000)
 }
@@ -44,14 +50,17 @@ function pauseTimer(reason: string) {
     clearInterval(timerInterval)
     timerInterval = null
   }
+  
+  const timerEl = document.querySelector("#timer") as HTMLElement
+  if (timerEl) {
+    timerEl.style.opacity = "0.5"
+  }
 }
 
 function updateTimerDisplay() {
-  const mins = Math.floor(timerSeconds / 60)
-  const secs = timerSeconds % 60
-  const timerEl = document.querySelector("#timer")
+  const timerEl = document.querySelector("#timer") as HTMLElement
   if (timerEl) {
-    timerEl.textContent = `${String(mins).padStart(2, '0')}:${String(secs).padStart(2, '0')}`
+    timerEl.textContent = new Date().toLocaleTimeString()
   }
 }
 
@@ -73,12 +82,15 @@ async function setupIdleMonitoring() {
   })
 
   await onIdle((payload) => {
+    const idleEl = document.querySelector("#idle-status") as HTMLElement
     if (payload.idle) {
       pauseTimer("Idle")
       logEvent(`⏸ User IDLE for ${payload.seconds}s — timer paused`)
+      if (idleEl) idleEl.style.display = "block"
     } else {
       startTimer()
       logEvent('▶ User ACTIVE — timer resumed')
+      if (idleEl) idleEl.style.display = "none"
     }
   })
 
@@ -96,8 +108,12 @@ async function setupIdleMonitoring() {
 window.addEventListener("DOMContentLoaded", () => {
   setupIdleMonitoring()
 
-  document.querySelector("#check-idle")?.addEventListener("click", async () => {
+  // Continuously poll the actual idle time from the OS
+  setInterval(async () => {
     const { seconds } = await getIdleTime()
-    logEvent(`ℹ️ Current idle time: ${seconds} seconds`)
-  })
+    const idleEl = document.querySelector("#idle-status")
+    if (idleEl) {
+      idleEl.textContent = `Currently Idle for: ${seconds}s`
+    }
+  }, 1000)
 })
