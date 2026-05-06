@@ -2,7 +2,7 @@
 
 Monitor screen lock/unlock, system idle time, and suspend/resume events in Tauri v2 applications. Inspired by Electron's `powerMonitor` API.
 
-## Preview
+## Demo-App Previewing Plugin
 
 ![idlemonitor](https://raw.githubusercontent.com/mindflowgo/tauri-idlemonitor/main/preview.jpg)
 
