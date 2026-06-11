@@ -4,7 +4,7 @@ Monitor screen lock/unlock, system idle time, and suspend/resume events in Tauri
 
 ## Demo-App Previewing Plugin
 
-This demo showcases how easy the plugin's features are accessible within a Tauri app!
+This demo showcases how easy the plugin's features are accessible within a Tauri app (after 10s it will trigger idle state)!
 
 ![Idlemonitor Demo Preview](https://raw.githubusercontent.com/mindflowgo/tauri-idlemonitor/main/preview.gif)
 
@@ -18,7 +18,7 @@ This demo showcases how easy the plugin's features are accessible within a Tauri
 | Android  | x           | x         | x              | Not supported |
 | iOS      | x           | x         | x              | Not supported |
 
-## Crate v0.2.2
+## Crate v0.2.3
 [tauri-plugin-idlemonitor](https://crates.io/crates/tauri-plugin-idlemonitor)
 
 ## Install
@@ -29,7 +29,7 @@ Add to your `src-tauri/Cargo.toml`:
 
 ```toml
 [dependencies]
-tauri-plugin-idlemonitor = "0.2.2"
+tauri-plugin-idlemonitor = "0.2.3"
 ```
 
 Or from a git repository:
