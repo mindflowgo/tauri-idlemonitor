@@ -29,6 +29,9 @@ impl InnerState {
     }
 
     fn start_lock_listener<R: Runtime>(&mut self, app: &AppHandle<R>) -> error::Result<()> {
+        if self.lock_listener.is_some() {
+            return Ok(());
+        }
         let listener = platform::start_lock_listener(app)
             .map_err(|e| error::Error::Io(std::io::Error::new(std::io::ErrorKind::Other, e)))?;
         self.lock_listener = Some(listener);
@@ -41,9 +44,6 @@ impl InnerState {
 
     fn stop(&mut self) {
         self.idle_monitor.stop();
-        if let Some(listener) = self.lock_listener.take() {
-            (listener.stop)();
-        }
     }
 
     fn is_running(&self) -> bool {
@@ -79,6 +79,9 @@ impl Builder {
             .setup(move |app, _api| {
                 let mut inner = InnerState::new();
                 inner.set_threshold(threshold);
+                if let Err(err) = inner.start_lock_listener(app) {
+                    eprintln!("[idlemonitor] failed to start lock listener during setup: {:?}", err);
+                }
                 app.manage(PowerMonitorState(Arc::new(Mutex::new(inner))));
                 Ok(())
             })

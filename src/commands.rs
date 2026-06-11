@@ -26,7 +26,6 @@ pub async fn start<R: Runtime>(
 
     let threshold = options.and_then(|o| o.idle_threshold_secs).unwrap_or(300);
     inner.set_threshold(threshold);
-    inner.start_lock_listener(&app)?;
     inner.start_idle_monitor(&app);
 
     Ok(())
