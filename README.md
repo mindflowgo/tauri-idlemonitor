@@ -326,7 +326,7 @@ await listen('system:lock', (event) => {
 
 ### macOS
 - **Idle time**: IOKit `kIOHIDLastActivityTimeKey` via the `user-idle2` crate
-- **Lock/Unlock**: `NSDistributedNotificationCenter` — listens for `NSWorkspaceSessionDidResignActiveNotification` (lock) and `NSWorkspaceSessionDidBecomeActiveNotification` (unlock)
+- **Lock/Unlock**: `NSDistributedNotificationCenter` — listens for `com.apple.screenIsLocked` (lock) and `com.apple.screenIsUnlocked` (unlock)
 - **Suspend/Resume**: `NSWorkspaceScreensDidSleepNotification` and `NSWorkspaceScreensDidWakeNotification`
 
 ### Windows
