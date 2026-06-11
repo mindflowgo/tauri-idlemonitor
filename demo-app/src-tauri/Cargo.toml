@@ -20,9 +20,9 @@ tauri-build = { version = "2", features = [] }
 [dependencies]
 tauri = { version = "2", features = [] }
 tauri-plugin-opener = "2"
-# WHEN USING OUTSIDE DEMO CHANGE DEPENDENCY TO:
-# tauri-plugin-idlemonitor = "0.2.2"
-tauri-plugin-idlemonitor = { path = "../.." }
+tauri-plugin-idlemonitor = "0.2.3"
+# WHEN MODIFYING THE IDLEMONITOR USE LOCAL ONE:
+# tauri-plugin-idlemonitor = { path = "../.." }
 serde = { version = "1", features = ["derive"] }
 serde_json = "1"
 

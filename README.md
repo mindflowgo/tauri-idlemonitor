@@ -4,7 +4,9 @@ Monitor screen lock/unlock, system idle time, and suspend/resume events in Tauri
 
 ## Demo-App Previewing Plugin
 
-![idlemonitor](https://raw.githubusercontent.com/mindflowgo/tauri-idlemonitor/main/preview.jpg)
+This demo showcases how easy the plugin's features are accessible within a Tauri app!
+
+![Idlemonitor Demo Preview](https://raw.githubusercontent.com/mindflowgo/tauri-idlemonitor/main/preview.gif)
 
 ## Platform Support
 

@@ -3567,7 +3567,9 @@ dependencies = [
 
 [[package]]
 name = "tauri-plugin-idlemonitor"
-version = "0.2.2"
+version = "0.2.3"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "3f33e005ea28c16117ef7f6adbc83acd0b6bb77e586c4f3c4023261054181173"
 dependencies = [
  "block2",
  "futures-util",
