@@ -8,15 +8,16 @@ This demo showcases how easy the plugin's features are accessible within a Tauri
 
 ![Idlemonitor Demo Preview](https://raw.githubusercontent.com/mindflowgo/tauri-idlemonitor/main/preview.gif)
 
+Run the demo easily with "npm start" after cloning directory (if npm installed, else install it!).
+
 ## Platform Support
 
-| Platform | Lock/Unlock | Idle Time | Suspend/Resume | Notes |
-| -------- | ----------- | --------- | -------------- | ----- |
-| macOS    | ✓           | ✓         | ✓              | NSWorkspace notifications + IOKit |
-| Windows  | ✓           | ✓         | ✓              | WTS session + power broadcast notifications + GetLastInputInfo |
-| Linux    | ✓           | ✓         | ✓              | DBus (ScreenSaver + login1) + XScreenSaver/GNOME Mutter |
-| Android  | x           | x         | x              | Not supported |
-| iOS      | x           | x         | x              | Not supported |
+Desktop (Lock/Unlock, Idle Time, Suspect/Resume) fully working:
+- macOS: demo-app/src-tauri/Cargo.lock
+- Windows: WTS session + power broadcast notifications + GetLastInputInfo
+- Linux: DBus (ScreenSaver + login1) + XScreenSaver/GNOME Mutter
+
+Not available for mobile.
 
 ## Crate v0.2.4
 [tauri-plugin-idlemonitor](https://crates.io/crates/tauri-plugin-idlemonitor)
