@@ -3,6 +3,6 @@
   "version": "0.2.4",
   "private": true,
   "scripts": {
-    "start": "cd examples/demo && npm install && npm run tauri dev"
+    "start": "npm install --prefix tauri-plugin-idlemonitor-api && cd demo-app && npm install && npm run tauri dev"
   }
 }
