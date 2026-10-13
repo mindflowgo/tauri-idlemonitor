@@ -1,5 +1,6 @@
 {
-  "name": "tauri-plugin-idlemonitor-workspace",
+  "name": "tauri-plugin-idlemonitor",
+  "version": "0.2.4",
   "private": true,
   "scripts": {
     "start": "cd examples/demo && npm install && npm run tauri dev"

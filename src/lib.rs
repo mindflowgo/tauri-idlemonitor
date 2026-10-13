@@ -25,15 +25,14 @@ impl InnerState {
     }
 
     fn set_threshold(&mut self, secs: u64) {
-        self.idle_monitor = idle::IdleMonitor::new(secs);
+        self.idle_monitor.set_threshold(secs);
     }
 
     fn start_lock_listener<R: Runtime>(&mut self, app: &AppHandle<R>) -> error::Result<()> {
         if self.lock_listener.is_some() {
             return Ok(());
         }
-        let listener = platform::start_lock_listener(app)
-            .map_err(|e| error::Error::Io(std::io::Error::new(std::io::ErrorKind::Other, e)))?;
+        let listener = platform::start_lock_listener(app).map_err(error::Error::Listener)?;
         self.lock_listener = Some(listener);
         Ok(())
     }

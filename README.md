@@ -13,12 +13,12 @@ This demo showcases how easy the plugin's features are accessible within a Tauri
 | Platform | Lock/Unlock | Idle Time | Suspend/Resume | Notes |
 | -------- | ----------- | --------- | -------------- | ----- |
 | macOS    | ✓           | ✓         | ✓              | NSWorkspace notifications + IOKit |
-| Windows  | ✓           | ✓         | —              | WTS session notifications + GetLastInputInfo |
+| Windows  | ✓           | ✓         | ✓              | WTS session + power broadcast notifications + GetLastInputInfo |
 | Linux    | ✓           | ✓         | ✓              | DBus (ScreenSaver + login1) + XScreenSaver/GNOME Mutter |
 | Android  | x           | x         | x              | Not supported |
 | iOS      | x           | x         | x              | Not supported |
 
-## Crate v0.2.3
+## Crate v0.2.4
 [tauri-plugin-idlemonitor](https://crates.io/crates/tauri-plugin-idlemonitor)
 
 ## Install
@@ -29,7 +29,7 @@ Add to your `src-tauri/Cargo.toml`:
 
 ```toml
 [dependencies]
-tauri-plugin-idlemonitor = "0.2.3"
+tauri-plugin-idlemonitor = "0.2.4"
 ```
 
 Or from a git repository:
@@ -334,6 +334,7 @@ await listen('system:lock', (event) => {
 ### Windows
 - **Idle time**: `GetLastInputInfo()` Win32 API — returns tick count of last input event
 - **Lock/Unlock**: `WTSRegisterSessionNotificationEx` — receives `WM_WTSSESSION_CHANGE` messages with `WTS_SESSION_LOCK` / `WTS_SESSION_UNLOCK` via a hidden window
+- **Suspend/Resume**: `WM_POWERBROADCAST` messages with `PBT_APMSUSPEND` / `PBT_APMRESUMEAUTOMATIC` via the same hidden window
 
 ### Linux
 

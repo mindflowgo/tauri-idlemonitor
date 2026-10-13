@@ -8,6 +8,8 @@ pub enum Error {
     Io(#[from] std::io::Error),
     #[error("{0}")]
     Idle(String),
+    #[error("failed to start lock listener: {0}")]
+    Listener(String),
     #[error("monitor not running")]
     NotRunning,
     #[error("monitor already running")]

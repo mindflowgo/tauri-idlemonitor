@@ -6,9 +6,10 @@ pub fn start_lock_listener<R: Runtime>(app: &AppHandle<R>) -> std::result::Resul
     let app_clone = app.clone();
     
     // Register on main thread so the main runloop can process the NSDistributedNotificationCenter notifications
-    let _ = app.run_on_main_thread(move || {
+    app.run_on_main_thread(move || {
         unsafe { listen_nsworkspace(&app_clone) };
-    });
+    })
+    .map_err(|e| format!("failed to register lock listener on the main thread: {e}"))?;
 
     Ok(LockListener {
         stop: Box::new(|| {
@@ -93,6 +94,6 @@ unsafe fn listen_nsworkspace<R: Runtime>(app: &AppHandle<R>) {
                 &block,
             );
         }
-        std::mem::forget(block);
+        // The notification center copies the block, so dropping our copy here is safe.
     }
 }
